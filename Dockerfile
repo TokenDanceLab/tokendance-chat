@@ -3,11 +3,16 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
-COPY frontend/package.json frontend/package-lock.json* ./
-RUN npm ci
+# corepack reads the pinned pnpm version from frontend/package.json
+# (packageManager). pnpm resolves the correct per-platform optional native
+# bindings (esbuild / rollup / tailwind-oxide, incl. linux-arm64-musl) from the
+# lockfile, so --frozen-lockfile is safe for the native amd64 + arm64 CD matrix.
+RUN corepack enable
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY frontend/ ./
-RUN npm run build
+RUN pnpm run build
 
 # ---- Stage 2: Build backend ----
 FROM golang:1.25-alpine AS backend-builder

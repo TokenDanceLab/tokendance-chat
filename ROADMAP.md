@@ -12,7 +12,7 @@ TokenDanceChat 是 AgentHub Hub/IM 验证项目兼可玩 Demo。
 
 - 公共聊天室优先，保留 TokenBot 单 agent 入口；
 - Telegram 级别的消息流动、对话人体工学、移动端交互质量；
-- 安全、可测试、可部署的工程基线，能将经验回流到 `D:\Code\AgentHub`。
+- 安全、可测试、可部署的工程基线，能将经验回流到 AgentHub 主仓库。
 
 `ROADMAP.md` 是面向未来 agent 的持久化目标账本。每次有意义的实现、验证、安全复核或范围决策后更新。
 
@@ -39,7 +39,7 @@ TokenDanceChat 是 AgentHub Hub/IM 验证项目兼可玩 Demo。
 |---|---|---|
 | P0 | AgentHub 验证对齐 | 保持 README、docs、roadmap、protocol 和 store contract 映射到 AgentHub 原语。 |
 | P0 | 协议/存储加固 | 将 WebSocket event 和 SQLite 表视为可复用 Hub 证据；为安全敏感合约添加回归测试。 |
-| P0 | 验证基线 | 保持 `go test ./...`、前端 focused tests、`npx tsc --noEmit`、`git diff --check` 全绿。 |
+| P0 | 验证基线 | 保持 `go test ./...`、前端 focused tests、`pnpm exec tsc --noEmit`、`git diff --check` 全绿。 |
 | P1 | 轻量聊天 UX | 公共消息流、threads、reactions、通知、搜索、移动端人体工学和 AI 工作区切换；能力状态与退役清单见 [docs/capability-matrix.md](./docs/capability-matrix.md)。 |
 | P1 | Telegram UX | 快速消息列表、干净输入、移动端手势、copy/reply/edit 人体工学、打磨过渡、媒体查看器质量。 |
 | P1 | Agent-as-contact | 让 TokenBot 感觉像轻量 AI 私聊入口：通过公共协议 mention/前缀发送，保留模型/provider 可供性，不恢复真人私聊或复杂联系人系统。 |
@@ -60,7 +60,7 @@ TokenDanceChat 是 AgentHub Hub/IM 验证项目兼可玩 Demo。
 
 - [x] `git diff --check`
 - [x] `cd backend && go test ./...`
-- [x] `cd frontend && npx tsc --noEmit`
+- [x] `cd frontend && pnpm exec tsc --noEmit`
 - [x] 涉及文件的 Focused 前后端测试
 - [x] 文档更新（protocol、security、用户可见行为和 AgentHub validation 笔记）
 - [x] `tmp_*` 或无关本地文件不暂存

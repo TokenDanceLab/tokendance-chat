@@ -90,10 +90,10 @@ cd backend && go run .
 # → http://localhost:8080
 
 # 2. 前端 Frontend
-cd frontend && npm install && npm run dev
+cd frontend && pnpm install && pnpm run dev
 # → http://localhost:5173
 
-# 3. 单二进制构建 Single-binary build（生产 jp1 = arm64；x86 主机改 GOARCH=amd64）
+# 3. 单二进制构建 Single-binary build（生产 生产主机 = arm64；x86 主机改 GOARCH=amd64）
 cd backend
 GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-s -w" -o tokendancechat .
 ```
@@ -225,7 +225,7 @@ docker compose up -d --build
 
 ## TokenDance 系统上下文
 
-在 `D:\Code\TokenDance` workspace 内做跨系统治理时，先看根级 `../AGENTS.md` 和 `../docs/`。TokenDanceChat 是 AgentHub 的 IM/Hub 技术验证项目；身份方向以 `../docs/identity/identity-auth.md` 和 `../tokendance-id/docs/api.md` 为准，视觉方向以 `../docs/design/design-system.md` 为准。
+在多仓 workspace 内做跨系统治理时，先看 workspace 根级 `AGENTS.md` 和 `docs/`。TokenDanceChat 是 AgentHub 的 IM/Hub 技术验证项目；身份方向以 `../docs/identity/identity-auth.md` 和 `../tokendance-id/docs/api.md` 为准，视觉方向以 `../docs/design/design-system.md` 为准。
 
 ---
 

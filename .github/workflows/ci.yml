@@ -39,12 +39,17 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm ci
-      - run: npm test -- --run
-      - run: npx tsc --noEmit
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test -- --run
+      - run: pnpm exec tsc --noEmit
 
   lint:
     runs-on: ubuntu-latest
@@ -54,11 +59,16 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm ci
-      - run: npx eslint .
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec eslint .
 
   public-preview-smoke:
     runs-on: ubuntu-latest
@@ -68,22 +78,27 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: backend/go.mod
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
       - name: Validate compose config
         env:
           CHAT_SESSION_SECRET: ci-compose-config-secret
         run: docker compose config
       - name: Install frontend dependencies
         working-directory: frontend
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       - name: Build frontend
         working-directory: frontend
-        run: npm run build
+        run: pnpm run build
       - name: Install Playwright Chromium
         working-directory: frontend
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
       - name: Run public preview smoke against production build
         shell: bash
         run: |
@@ -105,8 +120,8 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8199/api/health >/dev/null
           cd "$GITHUB_WORKSPACE/frontend"
-          E2E_BASE_URL=http://127.0.0.1:8199 npx playwright test src/e2e/lightweight-chat.test.ts src/e2e/page-load.test.ts --project=chromium --workers=1 --reporter=line
-          VISUAL_BASE_URL=http://127.0.0.1:8199 VISUAL_OUTPUT_DIR="$RUNNER_TEMP/tdchat-visual" npm run visual:acceptance
+          E2E_BASE_URL=http://127.0.0.1:8199 pnpm exec playwright test src/e2e/lightweight-chat.test.ts src/e2e/page-load.test.ts --project=chromium --workers=1 --reporter=line
+          VISUAL_BASE_URL=http://127.0.0.1:8199 VISUAL_OUTPUT_DIR="$RUNNER_TEMP/tdchat-visual" pnpm run visual:acceptance
       - name: Upload visual acceptance artifacts
         if: always()
         uses: actions/upload-artifact@v4

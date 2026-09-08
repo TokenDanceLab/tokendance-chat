@@ -218,5 +218,5 @@ cd backend
 go test ./...
 
 cd ..\frontend
-npx tsc --noEmit
+pnpm exec tsc --noEmit
 ```

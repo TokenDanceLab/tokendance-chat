@@ -77,11 +77,11 @@ TokenDanceChat is a demo and AgentHub stack validation app. The risk target is t
 
 ## Verification Queue
 
-Run these from `D:\Code\TokenDance\tokendance-chat`:
+Run these from the repository root:
 
 ```powershell
 cd backend; go test ./handler ./hub ./store
-cd ..\frontend; npm test -- --run src/App.test.tsx src/hooks/useWebSocket.test.ts src/lib/api.test.ts
+cd ..\frontend; pnpm test -- --run src/App.test.tsx src/hooks/useWebSocket.test.ts src/lib/api.test.ts
 rg -n "GetOIDCUserByUsername|msg.Token|setItem\(\"tokendance:auth\"|connect\(name" backend frontend
 rg -n "GetMessages|Search|ExportMessages|AdminStats|InviteGenerate|InviteList" backend/handler
 rg -n "UploadImage|ServeUpload|WebhookHandler|LinkPreview|isPrivateHost|OIDCLogin|http.Get|http.PostForm|io.ReadAll\(resp.Body\)" backend/handler

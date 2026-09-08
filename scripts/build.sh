@@ -20,15 +20,17 @@ if [ ! -f "package.json" ]; then
     exit 1
 fi
 
-npm ci
-npm run build
+# pnpm version is pinned by frontend/package.json (packageManager) via corepack.
+if command -v corepack >/dev/null 2>&1; then corepack enable; fi
+pnpm install --frozen-lockfile
+pnpm run build
 
 echo "Frontend build complete."
 
 # ------------------------------------------------
 # Step 2: Build backend (cross-compile for Linux)
 # ------------------------------------------------
-# Production host jp1 is aarch64 and has NO qemu/binfmt registered, so an amd64
+# The production host is aarch64 and has NO qemu/binfmt registered, so an amd64
 # binary cannot exec there at all. Default to arm64; override when targeting an
 # x86 host:  GOARCH=amd64 bash scripts/build.sh
 TARGET_GOARCH="${GOARCH:-arm64}"

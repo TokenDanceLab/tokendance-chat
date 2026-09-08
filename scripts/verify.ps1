@@ -45,21 +45,21 @@ Step "backend tests" {
 
 Step "frontend tests" {
   Set-Location "$ProjectRoot\frontend"
-  npm test 2>&1 | Select-Object -Last 1
-  Assert-NativeExitCode "npm test"
+  pnpm test 2>&1 | Select-Object -Last 1
+  Assert-NativeExitCode "pnpm test"
 }
 
 Step "TypeScript type check" {
   Set-Location "$ProjectRoot\frontend"
-  npx tsc --noEmit 2>&1 | Out-Null
-  Assert-NativeExitCode "npx tsc --noEmit"
+  pnpm exec tsc --noEmit 2>&1 | Out-Null
+  Assert-NativeExitCode "pnpm exec tsc --noEmit"
   Write-Host "  tsc --noEmit: no errors"
 }
 
 Step "frontend build" {
   Set-Location "$ProjectRoot\frontend"
-  npm run build 2>&1 | Select-Object -Last 1
-  Assert-NativeExitCode "npm run build"
+  pnpm run build 2>&1 | Select-Object -Last 1
+  Assert-NativeExitCode "pnpm run build"
 }
 
 Step "backend build" {
@@ -114,8 +114,8 @@ if (-not $SkipVisual) {
   if ($env:VISUAL_BASE_URL) {
     Step "visual acceptance" {
       Set-Location "$ProjectRoot\frontend"
-      npm run visual:acceptance 2>&1 | Select-Object -Last 8
-      Assert-NativeExitCode "npm run visual:acceptance"
+      pnpm run visual:acceptance 2>&1 | Select-Object -Last 8
+      Assert-NativeExitCode "pnpm run visual:acceptance"
     }
   } else {
     $visualPort = 8198
@@ -157,8 +157,8 @@ if (-not $SkipVisual) {
 
       Step "visual acceptance" {
         Set-Location "$ProjectRoot\frontend"
-        npm run visual:acceptance 2>&1 | Select-Object -Last 8
-        Assert-NativeExitCode "npm run visual:acceptance"
+        pnpm run visual:acceptance 2>&1 | Select-Object -Last 8
+        Assert-NativeExitCode "pnpm run visual:acceptance"
       }
     } finally {
       if ($visualBackend -and -not $visualBackend.HasExited) {
@@ -202,8 +202,8 @@ if ($WithE2E) {
     Step "Playwright E2E" {
       Set-Location "$ProjectRoot\frontend"
       $env:E2E_BASE_URL = "http://127.0.0.1:$e2ePort"
-      npx playwright test --project=chromium --reporter=line 2>&1 | Select-Object -Last 15
-      Assert-NativeExitCode "npx playwright test --project=chromium --reporter=line"
+      pnpm exec playwright test --project=chromium --reporter=line 2>&1 | Select-Object -Last 15
+      Assert-NativeExitCode "pnpm exec playwright test --project=chromium --reporter=line"
     }
   } catch {
     Write-Host "  Backend failed to start for E2E" -ForegroundColor Red

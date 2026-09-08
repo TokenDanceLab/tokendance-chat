@@ -27,7 +27,7 @@ data/
 HANDOFF.md
 HANDOFF*.md
 *.handoff.md
-server-secrets/
+server-secrets/  # leak-guard-allow:LG-3BD2D502
 
 # Local git worktrees
 .worktrees/
@@ -64,3 +64,6 @@ frontend/artifacts/
 .agents/
 
 deploy.md
+
+# 项目私有层：草图、roadmap 草稿、本地清单（凭据走 secrets，不放这里）
+.local/

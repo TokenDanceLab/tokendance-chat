@@ -5,7 +5,7 @@
 ## Unreleased (2026-09-02)
 
 ### Fixed
-- 生产架构错配：jp1（aarch64，无 qemu/binfmt）的 compose 误写 `platform: linux/amd64`，容器 `exec /app/server: exec format error` 崩溃循环，`chat.tokendancelab.com` 公网 502；改为 `linux/arm64` 后复验容器 healthy + 公网 200。
+- 生产架构错配：生产主机（aarch64，无 qemu/binfmt）的 compose 误写 `platform: linux/amd64`，容器 `exec /app/server: exec format error` 崩溃循环，`chat.tokendancelab.com` 公网 502；改为 `linux/arm64` 后复验容器 healthy + 公网 200。
 - `scripts/build.sh` 与 README 单二进制示例硬编码 `GOARCH=amd64` → 参数化（默认 arm64，`GOARCH=amd64` 可覆盖）。
 - `docs/progress/MASTER.md` 状态行「运行平台 aarch64，compose 需 platform linux/amd64」是错误因果陈述（本次事故的知识源头）→ 更正为 arm64 铁律 + live 镜像 `3bd2ad9`。
 

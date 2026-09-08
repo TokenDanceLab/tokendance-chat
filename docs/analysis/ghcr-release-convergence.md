@@ -22,7 +22,7 @@ TokenDanceChat 是 Go backend + React/Vite frontend 的单镜像应用。`Docker
 
 ## Testing Baseline
 - Backend: `cd backend && go test ./... && go build ./...`
-- Frontend: `cd frontend && npm ci && npm test -- --run && npx tsc --noEmit && npm run build`
+- Frontend: `cd frontend && pnpm install --frozen-lockfile && pnpm test -- --run && pnpm exec tsc --noEmit && pnpm run build`
 - Compose: `docker compose config`
 
 ## Project Governance Baseline

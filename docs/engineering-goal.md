@@ -11,7 +11,7 @@
 - 架构对齐 AgentHub 的 Desktop-Hub-Edge 方向；
 - 保持轻量聊天 Demo 可用、打磨到位、可部署；
 - 优先类型化协议契约、经过测试的 store 行为以及可恢复的 UI 状态，而非一次性 UI 补丁；
-- 记录哪些经验应反馈至 `D:\Code\AgentHub`；
+- 记录哪些经验应反馈至 AgentHub 主仓库；
 - 每次代码变更均以聚焦测试加对应层级的 build/类型检查加以验证。
 
 ## 设计原则
@@ -64,9 +64,9 @@
 | 变更类型 | 最低验证 |
 |---|---|
 | Go 后端/store/协议 | `cd backend && go test ./...` |
-| 前端组件/store/API | `cd frontend && npm test -- --run <聚焦测试>` 外加 `npx tsc --noEmit` |
-| 前端构建/运行时面 | `cd frontend && npm run build` |
-| 前端视觉打磨 | `cd frontend && npm run visual:acceptance`，然后检查截图输出目录 |
+| 前端组件/store/API | `cd frontend && pnpm test -- --run <聚焦测试>` 外加 `pnpm exec tsc --noEmit` |
+| 前端构建/运行时面 | `cd frontend && pnpm run build` |
+| 前端视觉打磨 | `cd frontend && pnpm run visual:acceptance`，然后检查截图输出目录 |
 | 仅文档 | 阅读变更后的文档检查链接/路径，并 `git diff --check` |
 | 部署 | 重启后健康检查，以及与变更相关的 WebSocket/手动冒烟测试 |
 

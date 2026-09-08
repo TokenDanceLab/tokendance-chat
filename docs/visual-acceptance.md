@@ -16,7 +16,7 @@ TokenDanceChat 是 AgentHub 的技术验证项目与轻量公共聊天室 Demo�
 
 必要工作流：
 
-1. 通过 `npm run visual:acceptance` 或等效的 Playwright 流程采集真实浏览器截图。
+1. 通过 `pnpm run visual:acceptance` 或等效的 Playwright 流程采集真实浏览器截图。
 2. 直接审阅截图中的布局、排版、按钮尺寸、图标平衡、密度、留白及视觉层级。
 3. 有用时与明确的审美参考对比。`gpt-image-2` mockup 可作为参考目标，但仅当真实浏览器截图与指标通过时实现才算验收通过。
 4. 对于有意义的前端打磨，将截图输出目录记录在 `ROADMAP.md` 或相关 PR/commit 说明中。
@@ -50,7 +50,7 @@ TokenDanceChat 是 AgentHub 的技术验证项目与轻量公共聊天室 Demo�
 - 认证弹窗桌面/移动尺寸、视口内 fit、tab 数量、tab label 裁剪情况、内容区域可见性、错误态可见性和弹窗内低于 44x44 的控件数（仅当认证入口发生可见改动时采集）；
 - 控制台错误。
 
-`npm run visual:acceptance` 当前硬性门槛包括：
+`pnpm run visual:acceptance` 当前硬性门槛包括：
 
 - 无水平溢出且无控制台/页面错误；
 - 移动端 textarea 至少 180px 宽，平板 textarea 至少 360px 宽；
@@ -65,32 +65,32 @@ TokenDanceChat 是 AgentHub 的技术验证项目与轻量公共聊天室 Demo�
 - 设置场景必须展示 320-420px 宽、全高右对齐通知抽屉，可见内容区域，且抽屉内无低于 44x44 的可视控件；
 - 认证弹窗场景仅在认证入口发生可见改动时启用；届时必须展示桌面 340-420px 宽、移动端视口内 fit、3 个 tab、未裁剪 tab label、可见内容区域；错误态场景必须展示 alert，且弹窗内无低于 44x44 的可视控件。
 
-针对本地生产构建运行可复用的 Playwright 验收脚本：
+针对本地生产构建运行可复用的 Playwright 验收脚本（以下路径均相对仓库根）：
 
 ```powershell
-cd D:\Code\TokenDance\tokendance-chat\frontend
-npm run build
+cd frontend
+pnpm run build
 
 # 在另一 shell 中通过 Go 后端托管构建产物。
-cd D:\Code\TokenDance\tokendance-chat\backend
+cd backend
 $env:CHAT_DB_PATH = Join-Path $env:TEMP 'tdchat-visual-chat.db'
-$env:CHAT_FRONTEND_DIR = 'D:\Code\TokenDance\tokendance-chat\frontend\dist'
+$env:CHAT_FRONTEND_DIR = (Resolve-Path ..\frontend\dist).Path
 $env:CHAT_ADDR = ':8091'
 go run .
 
 # 随后采集截图与指标。
-cd D:\Code\TokenDance\tokendance-chat\frontend
+cd ..\frontend
 $env:VISUAL_BASE_URL = 'http://127.0.0.1:8091'
-npm run visual:acceptance
+pnpm run visual:acceptance
 ```
 
-脚本将截图与 `metrics.json` 写入临时目录，如 `C:\Users\Ding\AppData\Local\Temp\tdchat-visual-*`。除非设置 `VISUAL_ALLOW_NONLOCAL=1`，否则拒绝非本地目标——因其会写入 Demo 种子消息。不要仅凭生成参考图声称 UI 打磨通过；生成图像仅用作真实实现的审美参考。
+脚本将截图与 `metrics.json` 写入系统临时目录（`$env:TEMP`），如 `%TEMP%\tdchat-visual-*`。除非设置 `VISUAL_ALLOW_NONLOCAL=1`，否则拒绝非本地目标——因其会写入 Demo 种子消息。不要仅凭生成参考图声称 UI 打磨通过；生成图像仅用作真实实现的审美参考。
 
 ## 2026-06-09 验收
 
 最新通过的截图验收：
 
-- 输出目录：`C:\Users\Ding\AppData\Local\Temp\tdchat-visual-2026-06-09T11-46-14-297Z`
+- 输出目录：`%TEMP%\tdchat-visual-2026-06-09T11-46-14-297Z`
 - 基线：由 Go 后端在 `http://127.0.0.1:18180` 托管最新生产构建，使用临时干净 SQLite 数据库。
 - 场景：十张截图，含 desktop/mobile light/dark、TokenBot desktop/mobile、mobile sidebar、desktop/mobile settings drawer。
 - AgentHub Desktop chatview 对齐：消息区沿用 transcript/list/block 中心列；自发消息使用浅 TokenDance Blue token surface、细边框、深色正文和低阴影，不再使用深蓝实心高饱和气泡；own message stack 改为内容自适应宽度，短消息不再被固定 72% 宽容器撑出前置空白。
@@ -105,7 +105,7 @@ npm run visual:acceptance
 
 继续收口验收：
 
-- 输出目录：`C:\Users\Ding\AppData\Local\Temp\tdchat-visual-2026-06-09T12-09-35-053Z`
+- 输出目录：`%TEMP%\tdchat-visual-2026-06-09T12-09-35-053Z`
 - 变更：移除 bot 模式的独立顶部 AI workbench；助手选择保留在侧栏，当前助手只在 header 标题和 composer context 中低噪呈现，消息区不再被额外工作台向下顶开。
 - 桌面 TokenBot 1440x900：聊天区从 header 后直接开始，`ai=false`，composer body 820x62px，radius 16px，textarea 658x44px，7 个 transcript blocks，`oldLabels=0`。
 - 移动 TokenBot 390x844：移除 107px 顶部 AI workbench 后，聊天区从 y=61 开始，composer body 346x62px，radius 16px，textarea 184x44px，6 个 transcript blocks，`oldLabels=0`。
@@ -113,7 +113,7 @@ npm run visual:acceptance
 
 上一轮通过的截图验收：
 
-- 输出目录：`C:\Users\Ding\AppData\Local\Temp\tdchat-visual-2026-06-09T09-19-25-222Z`
+- 输出目录：`%TEMP%\tdchat-visual-2026-06-09T09-19-25-222Z`
 - 基线：由 Go 后端在 `http://127.0.0.1:18180` 托管最新生产构建，使用临时干净 SQLite 数据库。
 - 场景：十张截图，含 desktop/mobile light/dark、TokenBot desktop/mobile、mobile sidebar、desktop/mobile settings drawer。
 - 桌面 light/dark 1440x900：composer body 820x104px，radius 16px，textarea 748x44px，可见 transcript blocks，`oldLabels=0`，无水平溢出。
@@ -141,7 +141,7 @@ npm run visual:acceptance
 
 历史通过的截图验收：
 
-- 输出目录：`C:\Users\Ding\AppData\Local\Temp\tdchat-visual-2026-05-22T23-53-00-860Z`
+- 输出目录：`%TEMP%\tdchat-visual-2026-05-22T23-53-00-860Z`
 - 基线：由 Go 后端托管的生产构建，使用干净的临时 SQLite 数据库，因此截图仅包含当前种子 Demo 对话，无此前运行的重复历史。
 - 场景：七张历史截图，含当时的 `desktop-light-group-info`；该场景现仅作为 rich IM 兼容证据，不属于当前轻量主界面合同。
 - 桌面 light/dark 1440x900：textarea 816x48px，输入框 130px，4 条可见种子消息，`smallControls=0`，侧边栏宽度 312px，侧边栏模型预览 4 张卡片，侧边栏在线用户区域顶部 561px，无水平溢出，无控制台错误。
@@ -165,7 +165,7 @@ npm run visual:acceptance
 
 历史通过的截图验收：
 
-- 输出目录：`C:\Users\Ding\AppData\Local\Temp\tdchat-visual-2026-05-25T00-15-30-088Z`
+- 输出目录：`%TEMP%\tdchat-visual-2026-05-25T00-15-30-088Z`
 - 基线：由 Go 后端在 `http://127.0.0.1:8198` 托管最新生产构建，使用干净临时 SQLite 数据库，验收后停止临时后端。
 - 场景：十二张历史截图，含当时的 `desktop-light-group-info`、`desktop-light-settings`、`desktop-light-auth-login`、`mobile-light-sidebar-open`、`mobile-light-settings`、`mobile-light-auth-register-error`、`mobile-light-format`；group-info/webhook 场景现仅作历史兼容证据。
 - 桌面 light 1440x900：textarea 1102x24px，输入框 106px，9 条可见消息，`composerTools=7/7`，`composerSmallControls=0`，侧边栏模型预览 4 张，在线用户区域顶部 416px，无水平溢出，无控制台错误。

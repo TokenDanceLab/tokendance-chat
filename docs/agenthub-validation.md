@@ -2,7 +2,7 @@
 
 TokenDanceChat 是 AgentHub 的验证项目与可玩 Demo。
 
-它并非与 AgentHub 竞争的独立产品线。当前职责是在 AgentHub 主仓库 `D:\Code\AgentHub` 迁移或重新实现之前，先行验证轻量公共聊天室、Agent 入口、Hub realtime 协议、持久化以及 Web 客户端假设。早期 rich IM 能力保留为历史压力测试与后端兼容证据，不属于当前前端主合同。
+它并非与 AgentHub 竞争的独立产品线。当前职责是在 AgentHub 主仓库迁移或重新实现之前，先行验证轻量公共聊天室、Agent 入口、Hub realtime 协议、持久化以及 Web 客户端假设。早期 rich IM 能力保留为历史压力测试与后端兼容证据，不属于当前前端主合同。
 
 ## 项目存在理由
 

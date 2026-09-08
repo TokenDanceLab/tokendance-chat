@@ -65,7 +65,7 @@ nginx/              # Nginx 配置
 cd backend && go build ./... && go test ./...
 
 # 前端
-cd frontend && npx tsc --noEmit && npm test && npm run build
+cd frontend && pnpm exec tsc --noEmit && pnpm test && pnpm run build
 ```
 
 提交前再跑 `git diff --check`。每次有意义的前端打磨须用真实浏览器截图验收（视觉验收流程见 `docs/visual-acceptance.md`）。

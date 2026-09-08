@@ -38,7 +38,6 @@ export function mergeMessageWindow(
   }
 
   let messages = [...current];
-  let addedCount = 0;
   const existingIDs = new Set(messages.map((m) => m.id));
   const newMessages: ChatMessage[] = [];
 
@@ -94,7 +93,7 @@ export function mergeMessageWindow(
     messages = [...messages, ...newMessages];
   }
 
-  addedCount = newMessages.length;
+  const addedCount = newMessages.length;
   let droppedSide: "head" | "tail" | null = null;
 
   // Enforce cap.

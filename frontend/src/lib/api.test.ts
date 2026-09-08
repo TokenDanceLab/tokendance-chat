@@ -589,14 +589,11 @@ describe("chatAPI.send", () => {
     chatAPI.disconnect();
   });
 
-  it("logs a warning when WebSocket is not connected", () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+  it("queues non-join messages when no WebSocket exists", () => {
+    // send() queues instead of dropping so a message never shows as "sent"
+    // while the server did not receive it; the queue flushes on next onopen.
     chatAPI.send({ type: "test" });
-    expect(warn).toHaveBeenCalledWith(
-      "WebSocket not connected, cannot send",
-      { type: "test" },
-    );
-    warn.mockRestore();
+    expect((chatAPI as any).outboundQueue).toEqual([{ type: "test" }]);
   });
 
   it("sends JSON-stringified data when WebSocket is OPEN", () => {

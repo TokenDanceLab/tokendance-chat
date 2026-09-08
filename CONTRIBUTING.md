@@ -15,7 +15,7 @@
 cd backend && go build ./... && go test ./...
 
 # 前端
-cd frontend && npm run build && npx vitest run
+cd frontend && pnpm run build && pnpm exec vitest run
 ```
 
 ## 提交规范
