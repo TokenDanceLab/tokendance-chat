@@ -121,7 +121,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
               ) : (
                 <button
                   onClick={requestNotifications}
-                  className="min-h-9 rounded-[var(--radius-control)] bg-[var(--accent)]/10 px-3 text-[11px] font-medium text-[var(--accent)] hover:bg-[var(--accent)]/18 transition-colors"
+                  className="min-h-11 rounded-[var(--radius-control)] bg-[var(--accent)]/10 px-3 text-[11px] font-medium text-[var(--accent)] hover:bg-[var(--accent)]/18 transition-colors"
                 >
                   {t("settings.notificationsEnable")}
                 </button>
