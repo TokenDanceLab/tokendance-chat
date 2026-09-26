@@ -1,0 +1,47 @@
+name: Emergency image export
+
+# Break-glass path for GHCR pull failures on deploy hosts (expired registry
+# credentials). Pulls an already-published image tag with the in-repo
+# GITHUB_TOKEN (packages:read) and exposes it as a workflow artifact for a
+# manual `docker load` sideload, per docs/log.md GHCR-crane precedent.
+
+on:
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        description: "GHCR tag to export (e.g. sha-<full>-arm64)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull and export image
+        env:
+          IMAGE: ghcr.io/tokendancelab/tokendance-chat:${{ inputs.image-tag }}
+        run: |
+          set -euo pipefail
+          docker pull "$IMAGE"
+          docker image inspect "$IMAGE" --format 'id={{.Id}} arch={{.Architecture}} os={{.Os}}'
+          docker save "$IMAGE" | gzip > tokendance-chat-image.tar.gz
+          ls -lh tokendance-chat-image.tar.gz
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tokendance-chat-${{ inputs.image-tag }}
+          path: tokendance-chat-image.tar.gz
+          retention-days: 3
