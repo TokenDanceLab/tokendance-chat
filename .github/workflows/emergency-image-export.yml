@@ -34,7 +34,9 @@ jobs:
           IMAGE: ghcr.io/tokendancelab/tokendance-chat:${{ inputs.image-tag }}
         run: |
           set -euo pipefail
-          docker pull "$IMAGE"
+          # Per-arch tags (sha-*-arm64) carry a single-architecture manifest, so
+          # pin the platform explicitly — the runner itself is amd64.
+          docker pull --platform linux/arm64 "$IMAGE"
           docker image inspect "$IMAGE" --format 'id={{.Id}} arch={{.Architecture}} os={{.Os}}'
           docker save "$IMAGE" | gzip > tokendance-chat-image.tar.gz
           ls -lh tokendance-chat-image.tar.gz
